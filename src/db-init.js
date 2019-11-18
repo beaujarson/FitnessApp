@@ -4,14 +4,14 @@ import "firebase/auth";
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
-    apiKey: "AIzaSyBpI1Bo1rPtHQqY14j-7l6NIBZ5WG2Y6Og",
-    authDomain: "project1-2bd86.firebaseapp.com",
-    databaseURL: "https://project1-2bd86.firebaseio.com",
-    projectId: "project1-2bd86",
-    storageBucket: "project1-2bd86.appspot.com",
-    messagingSenderId: "1069605043106",
-    appId: "1:1069605043106:web:4b6006ad6b46f6cad4d0fb",
-    measurementId: "G-JYF3W7W3XB"
+  apiKey: "AIzaSyAWA_ThPsCdTdtQ9I97jAIRQ4yDvKD4P3A",
+  authDomain: "fitnessapp-7784e.firebaseapp.com",
+  databaseURL: "https://fitnessapp-7784e.firebaseio.com",
+  projectId: "fitnessapp-7784e",
+  storageBucket: "fitnessapp-7784e.appspot.com",
+  messagingSenderId: "1058218214265",
+  appId: "1:1058218214265:web:2c764a6d42f49e18d925a8",
+  measurementId: "G-MZVXNS44BD"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
