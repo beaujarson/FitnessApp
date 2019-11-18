@@ -1,6 +1,6 @@
 <template>
   <div id="page">
-    <h2>Beau Jarson</h2>
+    <h2>Workout App</h2>
       <div id="expenseform">
         <v-date-picker v-model="expenseDate" />
         <v-text-field label="Description" type="text" v-model="expenseDesc" />
@@ -28,10 +28,10 @@
     <table>
       <thead>
         <tr>
-        <th id="th">Date</th>
-        <th id="th">Description</th>
+        <th id="th">Date of Workout</th>
+        <th id="th">Description of Workout</th>
         <th id="th">Cateogry</th>
-        <th id="th">Amount</th>
+        <th id="th">Reps</th>
         <th id="th">Selection</th></tr>
       </thead>
       <tbody>
@@ -62,7 +62,7 @@ import { AppDB } from "../db-init.js";
   export default {
   data() {
     return {
-      expenseCategories : ["Food","Gas","Travel","Education","Clothes"],
+      expenseCategories : ["Arms","Legs","Back","Cardio","Abs", "Other"],
       userSelections : [],
       myExpense: [],
       totalExpense: 0,
@@ -143,7 +143,7 @@ import { AppDB } from "../db-init.js";
 
 #expenseform {
     width: 40vw;
-    border-color: grey;
+    border-color: hsl(204, 9%, 62%);
     border-style: solid;
     border-radius: 15px;
     padding: 2%;
@@ -155,7 +155,7 @@ import { AppDB } from "../db-init.js";
 #table {
     width: 50vw;
     height: 335px;
-    border-color: grey;
+    border-color: hsl(204, 9%, 62%);
     border-style: solid;
     border-radius: 15px;
     padding: 2%;
@@ -165,8 +165,8 @@ import { AppDB } from "../db-init.js";
 }
 
 #th {
-    background-color:brown;
-    color: aliceblue;
+    background-color: hsl(204, 57%, 25%);
+    color: hsl(204, 57%, 92%);
 }
 
 h2 {
@@ -183,10 +183,10 @@ h2 {
 }
 
 #dataRows:nth-child(even) {
-    background-color: darkorange;
+    background-color: hsl(204, 57%, 56%);
 }
 
 #dataRows:nth-child(odd) {
-    background-color: yellow;
+    background-color: hsl(189, 62%, 69%);
 }
 </style>
