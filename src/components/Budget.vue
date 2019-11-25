@@ -49,8 +49,8 @@
           <td>{{ myWorkout.Push }}</td>
           <td>{{ myWorkout.Pull }}</td>
           <td>{{ myWorkout.Legs }}</td>
-          <td id="sets">{{ myWorkout.Sets.toFixed(2) }}</td>
-          <td id="reps">{{ myWorkout.Reps.toFixed(2) }}</td>
+          <td id="sets">{{ myWorkout.Sets }}</td>
+          <td id="reps">{{ myWorkout.Reps }}</td>
           <td><input type="checkbox" v-bind:id="myWorkout.mykey" v-on:change="selectionHandler" /></td>
         </tr>
       </tbody>
@@ -61,7 +61,7 @@
   
 </template>
 
-<script scoped>
+<script>
 import { AppDB } from "../db-init.js";
 
 
@@ -142,15 +142,15 @@ import { AppDB } from "../db-init.js";
   mounted() {
     AppDB.ref("workoutPrivate").on("child_added", this.dataHandler);
     AppDB.ref("workoutPrivate").on("child_removed", this.removeExpenseItem);
-    AppDB.ref("workoutPublic").on("child_added", this.dataHandler);
-    AppDB.ref("workoutPublic").on("child_removed", this.removeExpenseItem);
+    // AppDB.ref("workoutPublic").on("child_added", this.dataHandler);
+    // AppDB.ref("workoutPublic").on("child_removed", this.removeExpenseItem);
   },
 
   beforeDestroy() {
     AppDB.ref("workoutPrivate").off("child_added", this.dataHandler);
     AppDB.ref("workoutPrivate").off("child_removed", this.removeExpenseItem);
-    AppDB.ref("workoutPublic").off("child_added", this.dataHandler);
-    AppDB.ref("workoutPublic").off("child_removed", this.removeExpenseItem);
+    // AppDB.ref("workoutPublic").off("child_added", this.dataHandler);
+    // AppDB.ref("workoutPublic").off("child_removed", this.removeExpenseItem);
   }
   
 }
