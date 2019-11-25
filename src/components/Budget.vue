@@ -1,15 +1,24 @@
 <template>
   <div id="page">
     <h2>Workout App</h2>
-      <div id="expenseform">
-        <v-date-picker v-model="expenseDate" />
-        <v-text-field label="Description" type="text" v-model="expenseDesc" />
+      <div id="workoutForm">
         <v-select
-          v-model="expenseCategory"
-          v-bind:items="expenseCategories"
-          label="Category"
+          v-model="pushExercise"
+          v-bind:items="pushCategories"
+          label="Push Exercise"
         ></v-select>
-        <v-text-field label="Amount" type="number" step="0.01" v-model.number="expenseAmt" />
+        <v-select
+          v-model="pullExercise"
+          v-bind:items="pullCategories"
+          label="Pull Exercise"
+        ></v-select>
+        <v-select
+          v-model="legExercise"
+          v-bind:items="legCategories"
+          label="Leg Exercise"
+        ></v-select>
+        <v-text-field label="Sets" type="number" step="1.0" v-model.number="sets" />
+        <v-text-field label="Reps" type="number" step="1.0" v-model.number="reps" />
         <v-tooltip bottom>
                 <template v-slot:activator="{ on }">
                     <v-btn color="primary" @click="remove" v-bind:disabled="userSelections.length == 0" v-on="on">Remove Selection(s)</v-btn>
@@ -28,24 +37,21 @@
     <table>
       <thead>
         <tr>
-        <th id="th">Date of Workout</th>
-        <th id="th">Description of Workout</th>
-        <th id="th">Cateogry</th>
+        <th id="th">Push Exercise</th>
+        <th id="th">Pull Exercise</th>
+        <th id="th">Leg Exercise</th>
+        <th id="th">Sets</th>
         <th id="th">Reps</th>
         <th id="th">Selection</th></tr>
       </thead>
       <tbody>
-        <tr id="dataRows" v-for="(myExpense,pos) in myExpense" :key="pos">
-          <td>{{ myExpense.date }}</td>
-          <td>{{ myExpense.description }}</td>
-          <td>{{ myExpense.category }}</td>
-          <td id="amt">{{ myExpense.amount.toFixed(2) }}</td>
-          <td><input type="checkbox" v-bind:id="myExpense.mykey" v-on:change="selectionHandler" /></td>
-        </tr>
-        <tr>
-          <td colspan="2"></td>
-          <td id="total">Total</td>
-          <td id="amt">{{ totalExpense.toFixed(2) }}</td>
+        <tr id="dataRows" v-for="(myWorkout,pos) in myWorkout" :key="pos">
+          <td>{{ myWorkout.Push }}</td>
+          <td>{{ myWorkout.Pull }}</td>
+          <td>{{ myWorkout.Legs }}</td>
+          <td id="sets">{{ myWorkout.Sets.toFixed(2) }}</td>
+          <td id="reps">{{ myWorkout.Reps.toFixed(2) }}</td>
+          <td><input type="checkbox" v-bind:id="myWorkout.mykey" v-on:change="selectionHandler" /></td>
         </tr>
       </tbody>
     </table>
@@ -62,49 +68,61 @@ import { AppDB } from "../db-init.js";
   export default {
   data() {
     return {
-      expenseCategories : ["Arms","Legs","Back","Cardio","Abs", "Other"],
+      pushCategories : ["Bench press", "Shoulder press", "Chest-Fly", "Triceps", "Push-ups"],
+      pullCategories : ["Row", "Pull-ups", "Pull-downs", "Shrug", "Dead lift"],
+      legCategories : ["Squat", "Romanian deadlift", "Lunge", "Calf-raises", "Leg press"],
       userSelections : [],
-      myExpense: [],
-      totalExpense: 0,
-      expenseAmt: 0,
-      expenseDesc: "",
-      expenseDate: "",
-      expenseCategory: ""
+      myWorkout: [],
+      pushExercise: "",
+      pullExercise: "",
+      legExercise: "",
+      sets: 0,
+      reps: 0
     };
   },
 
   methods: {
-    dataHandler(snapshot) {
-      const item = snapshot.val();
-      this.myExpense.push({ ...item, mykey: snapshot.key });
-
-      // accumulate the total
-      this.totalExpense += item.amount;
-    },
-
+    
     removeExpenseItem(snapshot) {
       /* snapshot.key will hold the key of the item being REMOVED */
-      this.myExpense = this.myExpense.filter(z => z.mykey != snapshot.key);
-      this.totalExpense = 0;
-      this.myExpense.forEach(h => { this.totalExpense += h.amount
-      });
+      this.myWorkout = this.myWorkout.filter(z => z.mykey != snapshot.key);
       this.userSelections = [];
     },
 
+    dataHandler(snapshot) {
+      const item = snapshot.val();
+      this.myWorkout.push({...item, mykey: snapshot.key});
+    },
+
     yourButtonHandler() {
-      AppDB.ref("budget")
+      AppDB.ref("workoutPrivate")
       .push()
       .set({
-      description: this.expenseDesc,
-      amount: this.expenseAmt,
-      category: this.expenseCategory,
-      date: this.expenseDate,
+      Push: this.pushExercise,
+      Pull: this.pullExercise,
+      Legs: this.legExercise,
+      Sets: this.sets,
+      Reps: this.reps
+      });
+      AppDB.ref("workoutPublic")
+      .push()
+      .set({
+      Push: this.pushExercise,
+      Pull: this.pullExercise,
+      Legs: this.legExercise,
+      Sets: this.sets,
+      Reps: this.reps
       });
     },
 
     remove() {
       this.userSelections.forEach((victimKey) => {
-        AppDB.ref("budget")
+        AppDB.ref("workoutPrivate")
+        .child(victimKey)
+        .remove();
+    });
+      this.userSelections.forEach((victimKey) => {
+        AppDB.ref("workoutPublic")
         .child(victimKey)
         .remove();
     });
@@ -122,13 +140,17 @@ import { AppDB } from "../db-init.js";
   },
   },
   mounted() {
-    AppDB.ref("budget").on("child_added", this.dataHandler);
-    AppDB.ref("budget").on("child_removed", this.removeExpenseItem);
+    AppDB.ref("workoutPrivate").on("child_added", this.dataHandler);
+    AppDB.ref("workoutPrivate").on("child_removed", this.removeExpenseItem);
+    AppDB.ref("workoutPublic").on("child_added", this.dataHandler);
+    AppDB.ref("workoutPublic").on("child_removed", this.removeExpenseItem);
   },
 
   beforeDestroy() {
-    AppDB.ref("budget").off("child_added", this.dataHandler);
-    AppDB.ref("budget").off("child_removed", this.removeExpenseItem);
+    AppDB.ref("workoutPrivate").off("child_added", this.dataHandler);
+    AppDB.ref("workoutPrivate").off("child_removed", this.removeExpenseItem);
+    AppDB.ref("workoutPublic").off("child_added", this.dataHandler);
+    AppDB.ref("workoutPublic").off("child_removed", this.removeExpenseItem);
   }
   
 }
@@ -141,7 +163,7 @@ import { AppDB } from "../db-init.js";
     grid-template-columns: auto auto;
 }
 
-#expenseform {
+#workoutForm {
     width: 40vw;
     border-color: hsl(204, 9%, 62%);
     border-style: solid;

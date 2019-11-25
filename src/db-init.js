@@ -19,11 +19,4 @@ var firebaseConfig = {
 const AppDB = firebase.database();
 const AppAUTH = firebase.auth();
 
-AppDB.ref("workoutPrivate")
-  .push()
-  .set({ Push: "Bench Press", Pull: "Lat Pull", Legs: "Squats", Sets: "3", Reps: "12" });
-AppDB.ref("workoutPublic")
-  .push()
-  .set({ Push: "Chest Press", Pull: "Pull ups", Legs: "Leg Press", Sets: "4", Reps: "8" });
-
 export { AppDB, AppAUTH }; // Make it available to other modules
