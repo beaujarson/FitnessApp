@@ -1,4 +1,5 @@
 <template>
+<div id="page">
     <v-container id="loginForm" v-show="isLoggedIn === false">
         <v-row>
             <v-text-field label="Username/Email" v-model="userEmail" />
@@ -23,8 +24,9 @@
                 <span>Sign into an existing account that you've already created.</span>
             </v-tooltip>
         </v-row>
-
-    <v-simple-table fixed-header height="300px" >
+    </v-container>
+    <v-container>
+    <v-simple-table id="publicTable" fixed-header>
     <table>
       <thead>
         <tr>
@@ -48,6 +50,7 @@
     </table>
   </v-simple-table>
     </v-container>
+</div>
 </template>
 
 <script>
@@ -122,15 +125,34 @@ mounted() {
 </script>
 
 <style>
+#page {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto auto;
+}
+
 #loginForm {
-    width: 50vw;
+    width: 40vw;
     border-color: grey;
     border-style: solid;
     border-radius: 15px;
-    padding: 5%;
+    padding: 10%;
     display: grid;
     margin: 2%;
     grid-template-rows: auto auto auto;
 }
+
+#publicTable {
+    width: 50vw;
+    height: 300px;
+    border-color: grey;
+    border-style: solid;
+    border-radius: 15px;
+    padding: 2%;
+    display: grid;
+    margin: 2%;
+    grid-column-start: 2;
+}
+
 
 </style>
