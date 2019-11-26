@@ -34,6 +34,7 @@
       </div>
 <div id="table">
   <v-simple-table fixed-header height="300px" >
+    <div id="th">| Your workouts |</div>
     <table>
       <thead>
         <tr>

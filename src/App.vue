@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+      <v-toolbar-title>
+        <span>YouFIT</span>
+        <span class="font-weight-light"> Your Fitness Journey Starts HERE</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       

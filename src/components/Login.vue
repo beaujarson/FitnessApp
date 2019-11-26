@@ -26,25 +26,27 @@
         </v-row>
     </v-container>
     <v-container>
+        
     <v-simple-table id="publicTable" fixed-header>
+        <div id="th">| All users workouts |</div>
     <table>
       <thead>
         <tr>
+        <th id="th">User</th>
         <th id="th">Push Exercise</th>
         <th id="th">Pull Exercise</th>
         <th id="th">Leg Exercise</th>
         <th id="th">Sets</th>
-        <th id="th">Reps</th>
-        <th id="th">Selection</th></tr>
+        <th id="th">Reps</th></tr>
       </thead>
       <tbody>
         <tr id="dataRows" v-for="(myWorkout,pos) in myWorkout" :key="pos">
+          <td>{{ myWorkout.userEmail }}</td>
           <td>{{ myWorkout.Push }}</td>
           <td>{{ myWorkout.Pull }}</td>
           <td>{{ myWorkout.Legs }}</td>
           <td id="sets">{{ myWorkout.Sets }}</td>
           <td id="reps">{{ myWorkout.Reps }}</td>
-          <td><input type="checkbox" v-bind:id="myWorkout.mykey" v-on:change="selectionHandler" /></td>
         </tr>
       </tbody>
     </table>
@@ -103,7 +105,7 @@ methods: {
 
     dataHandler(snapshot) {
       const item = snapshot.val();
-      this.myWorkout.push({...item, mykey: snapshot.key});
+      this.myWorkout.push({Email: this.userEmail,...item, mykey: snapshot.key});
     },
 
 },
