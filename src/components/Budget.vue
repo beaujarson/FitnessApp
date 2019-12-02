@@ -1,6 +1,5 @@
 <template>
   <div id="page">
-    <h2>Workout App</h2>
       <div id="workoutForm">
         <v-select
           v-model="pushExercise"
@@ -32,8 +31,8 @@
                 <span>Add item to the table.</span>
         </v-tooltip>
       </div>
-<div id="table">
-  <v-simple-table fixed-header height="300px" >
+
+  <v-simple-table id="publicTable" fixed-header >
     <div id="th">| Your workouts |</div>
     <table>
       <thead>
@@ -57,7 +56,32 @@
       </tbody>
     </table>
   </v-simple-table>
-  </div>
+        
+    <v-simple-table id="publicTable" fixed-header>
+        <div id="th">| All users workouts |</div>
+    <table>
+      <thead>
+        <tr>
+        <th id="th">User</th>
+        <th id="th">Push Exercise</th>
+        <th id="th">Pull Exercise</th>
+        <th id="th">Leg Exercise</th>
+        <th id="th">Sets</th>
+        <th id="th">Reps</th></tr>
+      </thead>
+      <tbody>
+        <tr id="dataRows" v-for="(myWorkout,pos) in myWorkout" :key="pos">
+          <td>{{ myWorkout.userEmail }}</td>
+          <td>{{ myWorkout.Push }}</td>
+          <td>{{ myWorkout.Pull }}</td>
+          <td>{{ myWorkout.Legs }}</td>
+          <td id="sets">{{ myWorkout.Sets }}</td>
+          <td id="reps">{{ myWorkout.Reps }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </v-simple-table>
+
   </div>
   
 </template>
@@ -176,7 +200,19 @@ import { AppDB } from "../db-init.js";
 }
 
 #table {
-    width: 50vw;
+    width: 60vw;
+    height: 335px;
+    border-color: hsl(204, 9%, 62%);
+    border-style: solid;
+    border-radius: 15px;
+    padding: 2%;
+    display: grid;
+    margin: 3%;
+    grid-column-start: 2;
+}
+
+#publicTable {
+    width: 70vw;
     height: 335px;
     border-color: hsl(204, 9%, 62%);
     border-style: solid;
