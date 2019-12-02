@@ -32,6 +32,8 @@
         </v-tooltip>
       </div>
 
+  <p id="one">Enter your workout into the form and it will show up in both the "Your workouts" table and the "All users workouts" table. Comparing your workouts to other users can help you craft a workout routine that best suits your needs.</p>
+
   <v-simple-table id="publicTable" fixed-header >
     <div id="th">| Your workouts |</div>
     <table>
@@ -221,6 +223,18 @@ import { AppDB } from "../db-init.js";
     display: grid;
     margin: 3%;
     grid-column-start: 2;
+}
+
+#one {
+    grid-column-start: 2;
+    width: 30vw;
+    height: 30vh;
+    padding: 2%;
+    display: grid;
+    margin: 3%;
+    border-color: hsl(204, 9%, 62%);
+    border-style: solid;
+    border-radius: 15px;
 }
 
 #th {
