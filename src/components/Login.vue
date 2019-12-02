@@ -25,6 +25,9 @@
             </v-tooltip>
         </v-row>
     </v-container>
+
+    <p id="one">The table below shows all users workouts entered into the YouFit App. To enter your workout information in, log in and enter your workout into the form on the next page.</p>
+
     <v-container>
         
     <v-simple-table id="publicTable" fixed-header>
@@ -153,6 +156,18 @@ mounted() {
     padding: 2%;
     display: grid;
     margin: 2%;
+    grid-column-start: 2;
+}
+
+#one {
+    width: 40vw;
+    height: 30vh;
+    padding: 2%;
+    display: grid;
+    margin: 3%;
+    border-color: hsl(204, 9%, 62%);
+    border-style: solid;
+    border-radius: 15px;
     grid-column-start: 2;
 }
 
