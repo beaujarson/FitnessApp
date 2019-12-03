@@ -48,8 +48,7 @@
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-btn color="primary" @click="yourButtonHandler" v-on="on"
-            >Add</v-btn
-          >
+            >Add</v-btn>
         </template>
         <span>Add item to the table.</span>
       </v-tooltip>
@@ -245,7 +244,6 @@ export default {
 <style>
 #page {
   display: grid;
-  grid-template-rows: auto;
   grid-template-columns: auto auto;
 }
 
@@ -255,21 +253,8 @@ export default {
   border-style: solid;
   border-radius: 15px;
   padding: 2%;
-  display: grid;
   margin: 3%;
   grid-column-start: 1;
-}
-
-#table {
-  width: 60vw;
-  height: 335px;
-  border-color: hsl(204, 9%, 62%);
-  border-style: solid;
-  border-radius: 15px;
-  padding: 2%;
-  display: grid;
-  margin: 3%;
-  grid-column-start: 2;
 }
 
 #publicTable {
@@ -279,7 +264,6 @@ export default {
   border-style: solid;
   border-radius: 15px;
   padding: 2%;
-  display: grid;
   margin: 3%;
   grid-column-start: 2;
 }
@@ -289,7 +273,6 @@ export default {
   width: 30vw;
   height: 30vh;
   padding: 2%;
-  display: grid;
   margin: 3%;
   border-color: hsl(204, 9%, 62%);
   border-style: solid;
