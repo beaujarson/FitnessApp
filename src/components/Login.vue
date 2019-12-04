@@ -56,8 +56,8 @@
             <tr id="dataRows" v-for="(myWorkout, pos) in myWorkout" :key="pos">
               <td>
                 {{
-                  myWorkout.email != null
-                    ? myWorkoutPublic.email
+                  myWorkout.Email != null
+                    ? myWorkout.Email
                     : "example@gmail.com"
                 }}
               </td>
@@ -77,6 +77,7 @@
 <script>
 import { AppAUTH } from "../db-init.js";
 import { AppDB } from "../db-init.js";
+import store from "../store.js";
 
 export default {
   data: function() {
@@ -121,7 +122,7 @@ export default {
           this.snackbar = true;
           this.text = err;
         });
-        this.userEmail = this.email;
+        store.state.setUserEmail(this.email);
     },
 
     doSignIn() {
@@ -133,7 +134,7 @@ export default {
           this.snackbar = true;
           this.text = err;
         });
-        this.userEmail = this.email;
+        store.state.setUserEmail(this.email);
     },
 
     dataHandler(snapshot) {

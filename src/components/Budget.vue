@@ -48,7 +48,8 @@
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-btn color="primary" @click="yourButtonHandler" v-on="on"
-            >Add</v-btn>
+            >Add</v-btn
+          >
         </template>
         <span>Add item to the table.</span>
       </v-tooltip>
@@ -75,7 +76,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="dataRows" v-for="(myWorkoutPrivate, pos) in myWorkoutPrivate" :key="pos">
+          <tr
+            id="dataRows"
+            v-for="(myWorkoutPrivate, pos) in myWorkoutPrivate"
+            :key="pos"
+          >
             <td>{{ myWorkoutPrivate.Push }}</td>
             <td>{{ myWorkoutPrivate.Pull }}</td>
             <td>{{ myWorkoutPrivate.Legs }}</td>
@@ -98,6 +103,7 @@
       <table>
         <thead>
           <tr>
+            <th id="th">User</th>
             <th id="th">Push Exercise</th>
             <th id="th">Pull Exercise</th>
             <th id="th">Leg Exercise</th>
@@ -106,7 +112,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="dataRows" v-for="(myWorkoutPublic, pos) in myWorkoutPublic" :key="pos">
+          <tr
+            id="dataRows"
+            v-for="(myWorkoutPublic, pos) in myWorkoutPublic"
+            :key="pos"
+          >
+            <td>
+              {{
+                myWorkoutPublic.Email != null
+                  ? myWorkoutPublic.Email
+                  : "example.gmail.com"
+              }}
+            </td>
             <td>{{ myWorkoutPublic.Push }}</td>
             <td>{{ myWorkoutPublic.Pull }}</td>
             <td>{{ myWorkoutPublic.Legs }}</td>
@@ -121,10 +138,12 @@
 
 <script>
 import { AppDB } from "../db-init.js";
+import store from "../store.js";
 
 export default {
   data() {
     return {
+      email: "",
       pushCategories: [
         "Bench press",
         "Shoulder press",
@@ -150,7 +169,7 @@ export default {
       privacy: "",
       userEmail: "",
       sets: 0,
-      reps: 0,
+      reps: 0
     };
   },
 
@@ -178,7 +197,9 @@ export default {
 
     dataHandlerPrivate(snapshot) {
       const item = snapshot.val();
-      this.myWorkoutPrivate.push({ ...item, mykey: snapshot.key });
+      if (item.Email == store.state.userEmail) {
+        this.myWorkoutPrivate.push({ ...item, mykey: snapshot.key });
+      }
     },
 
     yourButtonHandler() {
@@ -186,6 +207,7 @@ export default {
         AppDB.ref("workoutPrivate")
           .push()
           .set({
+            Email: store.state.userEmail,
             Push: this.pushExercise,
             Pull: this.pullExercise,
             Legs: this.legExercise,
@@ -196,6 +218,7 @@ export default {
         AppDB.ref("workoutPrivate")
           .push()
           .set({
+            Email: store.state.userEmail,
             Push: this.pushExercise,
             Pull: this.pullExercise,
             Legs: this.legExercise,
@@ -205,6 +228,7 @@ export default {
         AppDB.ref("workoutPublic")
           .push()
           .set({
+            Email: store.state.userEmail,
             Push: this.pushExercise,
             Pull: this.pullExercise,
             Legs: this.legExercise,
