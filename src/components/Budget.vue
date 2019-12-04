@@ -56,10 +56,15 @@
     </div>
 
     <p id="one">
-      Enter your workout into the form and it will show up in both the "Your
+       Enter your workout into the form and it will show up in both the "Your
+
       workouts" table and the "All users workouts" table. Comparing your
+
       workouts to other users can help you craft a workout routine that best
+
       suits your needs.
+
+      <img :src="image" height="300px" width="500px">
     </p>
 
     <v-simple-table id="publicTable" fixed-header>
@@ -139,6 +144,7 @@
 <script>
 import { AppDB } from "../db-init.js";
 import store from "../store.js";
+import image from "./workout.png"
 
 export default {
   data() {
@@ -169,7 +175,8 @@ export default {
       privacy: "",
       userEmail: "",
       sets: 0,
-      reps: 0
+      reps: 0,
+      image: image
     };
   },
 

@@ -11,6 +11,6 @@ const routeTable = [
 ];
 
 const AppRouter = new VueRouter({ routes: routeTable, mode: "history", base: process.env.NODE_ENV === "production"
-? "/~jarsonb/CIS371/hw5/"
+? "/~milleja1/fitnessApp/"
 : "/"});
 export { AppRouter };

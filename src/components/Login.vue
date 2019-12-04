@@ -44,7 +44,6 @@
         <table>
           <thead>
             <tr>
-              <th id="th">User</th>
               <th id="th">Push Exercise</th>
               <th id="th">Pull Exercise</th>
               <th id="th">Leg Exercise</th>
@@ -54,13 +53,6 @@
           </thead>
           <tbody>
             <tr id="dataRows" v-for="(myWorkout, pos) in myWorkout" :key="pos">
-              <td>
-                {{
-                  myWorkout.Email != null
-                    ? myWorkout.Email
-                    : "example@gmail.com"
-                }}
-              </td>
               <td>{{ myWorkout.Push }}</td>
               <td>{{ myWorkout.Pull }}</td>
               <td>{{ myWorkout.Legs }}</td>
