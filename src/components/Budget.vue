@@ -76,16 +76,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="dataRows" v-for="(myWorkout, pos) in myWorkout" :key="pos">
-            <td>{{ myWorkout.Push }}</td>
-            <td>{{ myWorkout.Pull }}</td>
-            <td>{{ myWorkout.Legs }}</td>
-            <td id="sets">{{ myWorkout.Sets }}</td>
-            <td id="reps">{{ myWorkout.Reps }}</td>
+          <tr id="dataRows" v-for="(myWorkoutPrivate, pos) in myWorkoutPrivate" :key="pos">
+            <td>{{ myWorkoutPrivate.Push }}</td>
+            <td>{{ myWorkoutPrivate.Pull }}</td>
+            <td>{{ myWorkoutPrivate.Legs }}</td>
+            <td id="sets">{{ myWorkoutPrivate.Sets }}</td>
+            <td id="reps">{{ myWorkoutPrivate.Reps }}</td>
             <td>
               <input
                 type="checkbox"
-                v-bind:id="myWorkout.mykey"
+                v-bind:id="myWorkoutPrivate.mykey"
                 v-on:change="selectionHandler"
               />
             </td>
@@ -99,7 +99,6 @@
       <table>
         <thead>
           <tr>
-            <th id="th">User</th>
             <th id="th">Push Exercise</th>
             <th id="th">Pull Exercise</th>
             <th id="th">Leg Exercise</th>
@@ -108,13 +107,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr id="dataRows" v-for="(myWorkout, pos) in myWorkout" :key="pos">
-            <td>{{ myWorkout.userEmail }}</td>
-            <td>{{ myWorkout.Push }}</td>
-            <td>{{ myWorkout.Pull }}</td>
-            <td>{{ myWorkout.Legs }}</td>
-            <td id="sets">{{ myWorkout.Sets }}</td>
-            <td id="reps">{{ myWorkout.Reps }}</td>
+          <tr id="dataRows" v-for="(myWorkoutPublic, pos) in myWorkoutPublic" :key="pos">
+            <td>{{ myWorkoutPublic.Push }}</td>
+            <td>{{ myWorkoutPublic.Pull }}</td>
+            <td>{{ myWorkoutPublic.Legs }}</td>
+            <td id="sets">{{ myWorkoutPublic.Sets }}</td>
+            <td id="reps">{{ myWorkoutPublic.Reps }}</td>
           </tr>
         </tbody>
       </table>
@@ -145,31 +143,47 @@ export default {
       ],
       privacyCategories: ["Private", "Public"],
       userSelections: [],
-      myWorkout: [],
+      myWorkoutPrivate: [],
+      myWorkoutPublic: [],
       pushExercise: "",
       pullExercise: "",
       legExercise: "",
       privacy: "",
       userEmail: "",
       sets: 0,
-      reps: 0
+      reps: 0,
     };
   },
 
   methods: {
-    removeExpenseItem(snapshot) {
+    removeItemPublic(snapshot) {
       /* snapshot.key will hold the key of the item being REMOVED */
-      this.myWorkout = this.myWorkout.filter(z => z.mykey != snapshot.key);
+      this.myWorkoutPublic = this.myWorkoutPublic.filter(
+        z => z.mykey != snapshot.key
+      );
       this.userSelections = [];
     },
 
-    dataHandler(snapshot) {
+    removeItemPrivate(snapshot) {
+      /* snapshot.key will hold the key of the item being REMOVED */
+      this.myWorkoutPrivate = this.myWorkoutPrivate.filter(
+        z => z.mykey != snapshot.key
+      );
+      this.userSelections = [];
+    },
+
+    dataHandlerPublic(snapshot) {
       const item = snapshot.val();
-      this.myWorkout.push({ ...item, mykey: snapshot.key });
+      this.myWorkoutPublic.push({ ...item, mykey: snapshot.key });
+    },
+
+    dataHandlerPrivate(snapshot) {
+      const item = snapshot.val();
+      this.myWorkoutPrivate.push({ ...item, mykey: snapshot.key });
     },
 
     yourButtonHandler() {
-      if (this.privacy.endsWith("e")) {
+      if (this.privacy == "Private") {
         AppDB.ref("workoutPrivate")
           .push()
           .set({
@@ -192,7 +206,6 @@ export default {
         AppDB.ref("workoutPublic")
           .push()
           .set({
-            Email: this.userEmail,
             Push: this.pushExercise,
             Pull: this.pullExercise,
             Legs: this.legExercise,
@@ -227,17 +240,17 @@ export default {
     }
   },
   mounted() {
-    AppDB.ref("workoutPrivate").on("child_added", this.dataHandler);
-    AppDB.ref("workoutPrivate").on("child_removed", this.removeExpenseItem);
-    // AppDB.ref("workoutPublic").on("child_added", this.dataHandler);
-    // AppDB.ref("workoutPublic").on("child_removed", this.removeExpenseItem);
+    AppDB.ref("workoutPrivate").on("child_added", this.dataHandlerPrivate);
+    AppDB.ref("workoutPrivate").on("child_removed", this.removeItemPrivate);
+    AppDB.ref("workoutPublic").on("child_added", this.dataHandlerPublic);
+    AppDB.ref("workoutPublic").on("child_removed", this.removeItemPublic);
   },
 
   beforeDestroy() {
-    AppDB.ref("workoutPrivate").off("child_added", this.dataHandler);
-    AppDB.ref("workoutPrivate").off("child_removed", this.removeExpenseItem);
-    // AppDB.ref("workoutPublic").off("child_added", this.dataHandler);
-    // AppDB.ref("workoutPublic").off("child_removed", this.removeExpenseItem);
+    AppDB.ref("workoutPrivate").off("child_added", this.dataHandlerPrivate);
+    AppDB.ref("workoutPrivate").off("child_removed", this.removeItemPrivate);
+    AppDB.ref("workoutPublic").off("child_added", this.dataHandlerPublic);
+    AppDB.ref("workoutPublic").off("child_removed", this.removeItemPublic);
   }
 };
 </script>

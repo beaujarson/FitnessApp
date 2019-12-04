@@ -35,13 +35,16 @@
 <script>
 // import Login from './components/Login';
 import { AppAUTH } from "./db-init.js";
+import store from "./store.js";
 
 export default {
+  store,
   name: 'App',
   components: {
     //  Login,
   },
   data: () => ({
+      userEmail: "",
       isLoggedIn: false,
       dialog: false
   }),
