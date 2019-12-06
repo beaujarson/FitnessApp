@@ -47,6 +47,18 @@
       </v-tooltip>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
+          <v-btn
+            color="primary"
+            @click="editFileButtonHandler"
+            v-on="on"
+            v-bind:disabled="userSelections.length == 0"
+            >Edit Selection</v-btn
+          >
+        </template>
+        <span>Add item to the table.</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
           <v-btn color="primary" @click="yourButtonHandler" v-on="on"
             >Add</v-btn
           >
@@ -55,17 +67,7 @@
       </v-tooltip>
     </div>
 
-    <p id="one">
-       Enter your workout into the form and it will show up in both the "Your
-
-      workouts" table and the "All users workouts" table. Comparing your
-
-      workouts to other users can help you craft a workout routine that best
-
-      suits your needs.
-
-      <img :src="image" height="300px" width="500px">
-    </p>
+    <img id="pic" :src="image" height="300px" width="500px">
 
     <v-simple-table id="publicTable" fixed-header>
       <div id="th">| Your workouts |</div>
@@ -209,6 +211,20 @@ export default {
       }
     },
 
+    editFileButtonHandler() {
+      var result = this.myWorkoutPrivate.find(r => r.mykey == this.userSelections[0]);
+      if (result.Privacy == "Public") {
+        this.$router.push({ path: "/editor" });
+      } else if (store.state.userEmail == result.Email && result.Privacy == "Private"
+      ) {
+        this.$router.push({ path: "/editor" });
+      } else {
+        this.error = true;
+        this.text = "That file doesn't belong to you! ";
+        alert("That file doesn't belong to you! ");
+      }
+    },
+
     yourButtonHandler() {
       if (this.privacy == "Private") {
         AppDB.ref("workoutPrivate")
@@ -219,7 +235,9 @@ export default {
             Pull: this.pullExercise,
             Legs: this.legExercise,
             Sets: this.sets,
-            Reps: this.reps
+            Reps: this.reps,
+            Privacy: this.privacy,
+            Notes: ""
           });
       } else {
         AppDB.ref("workoutPrivate")
@@ -230,7 +248,9 @@ export default {
             Pull: this.pullExercise,
             Legs: this.legExercise,
             Sets: this.sets,
-            Reps: this.reps
+            Reps: this.reps,
+            Privacy: this.privacy,
+            Notes: ""
           });
         AppDB.ref("workoutPublic")
           .push()
@@ -240,7 +260,9 @@ export default {
             Pull: this.pullExercise,
             Legs: this.legExercise,
             Sets: this.sets,
-            Reps: this.reps
+            Reps: this.reps,
+            Privacy: this.privacy,
+            Notes: ""
           });
       }
     },
@@ -261,11 +283,19 @@ export default {
     selectionHandler(changeEvent) {
       const whichKey = changeEvent.target.id;
       if (changeEvent.target.checked) {
+        store.state.setKey(whichKey);
         this.userSelections.push(whichKey);
       } else {
         this.userSelections = this.userSelections.filter(function(value) {
-          return value != whichKey;
+          if (value != whichKey) {
+            store.state.setKey(value);
+            return true;
+          }
+          return false;
         });
+        if (this.userSelections.length == 0) {
+          store.state.setKey("");
+        }
       }
     }
   },
@@ -312,15 +342,12 @@ export default {
   grid-column-start: 2;
 }
 
-#one {
+#pic {
+  width: 50vw;
+  height: 400px;
   grid-column-start: 2;
-  width: 30vw;
-  height: 30vh;
-  padding: 2%;
-  margin: 3%;
-  border-color: hsl(204, 9%, 62%);
-  border-style: solid;
-  border-radius: 15px;
+  grid-row: 1;
+  padding: 4px;
 }
 
 #th {
